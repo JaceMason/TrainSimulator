@@ -7,11 +7,9 @@ int main(){
 	Station station;
 	Track track;
 	Train train(10);
-	
+	track.send_train(&train);
 	station.tick();
 	track.tick();
-	train.tick();
-	
 	return 0;
 	
 }

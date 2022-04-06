@@ -6,7 +6,14 @@ Train::Train(int speed){
 	this->speed=speed;
 }
 
-void Train::tick(){
-	position += speed;
-	printf("Train on track moving to %d...\n", position);
+void Train::tick(int trackDist){
+	printf("Train tick\n");
+	if(!arrival){
+		position += speed;
+		printf("Train on track moving to %d...\n", position);
+		if(position >= trackDist){
+			arrival = true;
+			printf("Train arriving at a station!");
+		}
+	}
 }

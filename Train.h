@@ -5,8 +5,10 @@ class Train{
 private:
 	int speed;
 	int position;
+	bool arrival;
 public:
 	Train(int speed);
-	void tick();
+	void tick(int trackDist);
+	bool arrived();
 };
 #endif
