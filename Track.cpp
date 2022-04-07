@@ -29,6 +29,9 @@ void Track::tick(){
 	Node *currNode = onTrackList;
 	while(currNode != NULL){
 		currNode->train->tick(trackDistance);
+		if(currNode->train->arrived()){
+			add_train_to_list(&arrivalList, pop_train_from_list(&onTrackList));
+		}
 		currNode = currNode->next;
 	}
 }
