@@ -6,7 +6,7 @@ Track::Track(){
 	
 	onTrackList = NULL;
 	arrivalList = NULL;
-	trackDistance = 100;
+	trackDistance = 40;
 }
 
 Track::~Track(){
@@ -25,9 +25,10 @@ Track::~Track(){
 }
 
 void Track::tick(){
-	printf("Track tick...\n");
+	printf("Track Status:\n");
 	Node *currNode = onTrackList;
 	while(currNode != NULL){
+		printf("\t");
 		currNode->train->tick(trackDistance);
 		if(currNode->train->arrived()){
 			add_train_to_list(&arrivalList, pop_train_from_list(&onTrackList));

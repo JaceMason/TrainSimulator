@@ -8,7 +8,7 @@ Train::Train(int speed){
 }
 
 void Train::tick(int trackDist){
-	printf("Train tick\n");
+	printf("Train tick... ");
 	if(!arrival){
 		position += speed;
 		printf("Train on track moving to %d...\n", position);
@@ -22,6 +22,7 @@ void Train::tick(int trackDist){
 bool Train::arrived(){
 	if(arrival){
 		arrival = false;
+		position = 0;
 		return true;
 	}
 	else{

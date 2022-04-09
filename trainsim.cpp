@@ -1,28 +1,46 @@
 #include <stdio.h>
 #include <chrono>
 #include <thread>
+#include <vector>
+using namespace std::chrono;
+using std::vector;
 
 #include "Station.h"
 #include "Train.h"
 #include "Track.h"
 
-using namespace std::chrono;
+#define STATIONNUM 3
 
 int main(){
-	Station station;
-	Track track;
+	Track tracks[STATIONNUM];
+	vector <Station> stations;
 	Train train(10);
-	track.send_train(&train);
+
+	//create and setup the stations
+	stations.reserve(STATIONNUM);
+	for(int i = 0, j = 1; i < STATIONNUM; i++, j++){
+		if(j == STATIONNUM){
+			j = 0;
+		}
+		stations.emplace_back(&tracks[i], &tracks[j]);
+	}
+	tracks[0].send_train(&train);
+	int hours = 1;
 	while(1){
 		auto start = high_resolution_clock::now();
 		
 		//Main Loop
-		station.tick();
-		track.tick();
-		if(track.receive_train()){
-			printf("Woo! The train is here!\n");
+		printf("\n-----Hour %d-----\n", hours);
+
+		for(int i = 0; i < STATIONNUM; i++){
+			tracks[i].tick();
 		}
 		printf("\n");
+		for(int i = 0; i < STATIONNUM; i++){
+			stations[i].tick();
+		}
+
+		hours++;
 		//End Main Loop
 		
 		auto diff = duration_cast<milliseconds>(high_resolution_clock::now()-start).count();
