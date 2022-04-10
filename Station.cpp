@@ -25,7 +25,7 @@ Station::Station(string name, int index, string cargo, Track *arrive, Track *dep
 }
 
 void Station::tick(){
-	printf("Station Status:\n");
+	printf("%s Station (%d) Status:\n", name.c_str(), index);
 	//Try to get a Train
 	if(currentTrain == NULL){
 		currentTrain = arrivingTrack->receive_train(); //Might be set to NULL.
@@ -66,13 +66,27 @@ bool Station::check_logic(){
 }
 
 bool Station::cargo_logic(){
-	if(cargoTimer >= cargoLoadTime){
-		currentTrain->load_cargo(cargo);
-		return true;
+	//If train is at the right destination, do the cargo logic.
+	if(currentTrain->at_destination(index)){
+		if(cargoTimer >= cargoLoadTime){
+			if(currentTrain->peek_cargo() == ""){
+				currentTrain->load_cargo(cargo);
+				printf("\tTrain loaded with %s\n", cargo.c_str());
+			}
+			else{
+				string stuff = currentTrain->unload_cargo();
+				printf("\tGot %s from the train!\n", stuff.c_str());
+			}
+			return true;
+		}
+		else{
+			printf("\tTrain's cargo is being processed...\n");
+			cargoTimer++;
+			return false;
+		}
 	}
+	//Not destination, so no cargo logic.
 	else{
-		printf("\tLoading %s\n", cargo.c_str());
-		cargoTimer++;
-		return false;
+		return true;
 	}
 }
