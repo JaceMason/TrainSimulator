@@ -7,12 +7,19 @@ Station::Station(){
 	currentTrain = NULL;
 	checkTime = 1;
 	checkTimer = 0;
+	cargoLoadTime = 1;
+	cargoTimer = 0;
+	cargo = "Sand";
 	printf("Station stationed.\n");
 }
 
-Station::Station(Track *arrive, Track *depart):
+Station::Station(string name, int index, string cargo, Track *arrive, Track *depart):
 	Station()
 {
+	this->name = name;
+	this->index = index;
+	this->cargo = cargo;
+	
 	arrivingTrack = arrive;
 	departingTrack = depart;
 }
@@ -32,12 +39,9 @@ void Station::tick(){
 
 	//If we have a train.
 	if(currentTrain != NULL){
-		if(checkTimer >= checkTime){
+		//cargo_logic() will only run if check_logic() is true
+		if(check_logic() && cargo_logic()){
 			send_off_train();
-		}
-		else{
-			printf("\tChecking Train\n");
-			checkTimer++;
 		}
 	}
 }
@@ -47,4 +51,28 @@ void Station::send_off_train(){
 	departingTrack->send_train(currentTrain);
 	currentTrain = NULL;
 	checkTimer = 0;
+	cargoTimer = 0;
+}
+
+bool Station::check_logic(){
+	if(checkTimer >= checkTime){
+		return true;
+	}
+	else{
+		printf("\tChecking Train\n");
+		checkTimer++;
+		return false;
+	}
+}
+
+bool Station::cargo_logic(){
+	if(cargoTimer >= cargoLoadTime){
+		currentTrain->load_cargo(cargo);
+		return true;
+	}
+	else{
+		printf("\tLoading %s\n", cargo.c_str());
+		cargoTimer++;
+		return false;
+	}
 }

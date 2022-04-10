@@ -2,6 +2,9 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <string>
+
+using std::string;
 using namespace std::chrono;
 using std::vector;
 
@@ -12,6 +15,8 @@ using std::vector;
 #define STATIONNUM 3
 
 int main(){
+	string stationNames[] = {"Orange", "Purple", "Green", "Amber"};
+	string stationCargo[] = {"Stones", "Plants", "Trash", "Books"};
 	Track tracks[STATIONNUM];
 	vector <Station> stations;
 	Train train(10);
@@ -22,7 +27,7 @@ int main(){
 		if(j == STATIONNUM){
 			j = 0;
 		}
-		stations.emplace_back(&tracks[i], &tracks[j]);
+		stations.emplace_back(stationNames[i], i, stationCargo[i], &tracks[i], &tracks[j]);
 	}
 	tracks[0].send_train(&train);
 	int hours = 1;

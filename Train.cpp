@@ -5,6 +5,7 @@ Train::Train(int speed){
 	position = 0;
 	this->speed=speed;
 	arrival = false;
+	cargo = "";
 }
 
 void Train::tick(int trackDist){
@@ -28,4 +29,8 @@ bool Train::arrived(){
 	else{
 		return false;
 	}
+}
+
+bool Train::load_cargo(string cargo){
+	this->cargo = cargo;
 }
